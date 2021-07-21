@@ -1,6 +1,8 @@
 package crc16
 
-import "testing"
+import (
+	"testing"
+)
 
 type testCase struct {
 	Message []byte
@@ -39,5 +41,18 @@ func TestCCITTFalse(t *testing.T) {
 	actual := ChecksumCCITTFalse(data)
 	if actual != target {
 		t.Fatalf("CCITT checksum did not return the correct value, expected %x, received %x", target, actual)
+	}
+}
+
+func TestXModem(t *testing.T) {
+	tests := []testCase{
+		{[]byte("123456789"), 0x31C3},
+		{[]byte{0x54, 0x45, 0x4b, 0x38, 0x31, 0x31, 0x2c, 0x52, 0x35, 0x3d, 0x30, 0x31, 0x2c, 0x5a}, 0x8E48},
+		{[]byte{0x54, 0x45, 0x4b, 0x38, 0x31, 0x31, 0x2c, 0x52, 0x35, 0x3d, 0x31, 0x31, 0x2c, 0x5a}, 0xF8FC}}
+	for _, testcase := range tests {
+		result := ChecksumXModem(testcase.Message)
+		if testcase.CRC != result {
+			t.Fatalf("Modbus CRC-16 value is incorrect, expected %d, received %d.", testcase.CRC, result)
+		}
 	}
 }

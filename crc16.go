@@ -15,6 +15,8 @@ const (
 	SCSI = 0xEDD1
 
 	MBUS = 0x3D65
+
+	XMODEM = 0x1021
 )
 
 // Table is a 256-word table representing the polynomial for efficient processing.
@@ -40,6 +42,8 @@ var CCITTFalseTable = makeBitsReversedTable(CCITTFalse)
 var SCSITable = makeTable(SCSI)
 
 var MBusTable = makeBitsReversedTable(MBUS)
+
+var XModemTable = makeBitsReversedTable(XMODEM)
 
 // MakeTable returns the Table constructed from the specified polynomial.
 func MakeTable(poly uint16) *Table {
@@ -152,3 +156,7 @@ func ChecksumSCSI(data []byte) uint16 { return UpdateInverted(0, SCSITable, data
 // ChecksumMBus returns the CRC-16 checksum of data
 // using the MBus polynomial. Final result is inverted
 func ChecksumMBus(data []byte) uint16 { return ^Update(0, MBusTable, data) }
+
+// ChecksumXModem returns the CRC-16 checksum of data
+// using the XMODEM polynomial.
+func ChecksumXModem(data []byte) uint16 { return Update(0, XModemTable, data) }
