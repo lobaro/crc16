@@ -45,8 +45,6 @@ var MBusTable = makeBitsReversedTable(MBUS)
 
 var XModemTable = makeBitsReversedTable(XMODEM)
 
-var IBM_SDLCTable = makeTable(CCITTFalse)
-
 // MakeTable returns the Table constructed from the specified polynomial.
 func MakeTable(poly uint16) *Table {
 	return makeTable(poly)
@@ -162,7 +160,3 @@ func ChecksumMBus(data []byte) uint16 { return ^Update(0, MBusTable, data) }
 // ChecksumXModem returns the CRC-16 checksum of data
 // using the XMODEM polynomial.
 func ChecksumXModem(data []byte) uint16 { return Update(0, XModemTable, data) }
-
-// ChecksumIBM_SDLC returns the CRC-16 checksum of data
-// using the IBM-SDLC polynomial.
-func ChecksumIBM_SDLC(data []byte) uint16 { return Update(0xffff, IBM_SDLCTable, data) }

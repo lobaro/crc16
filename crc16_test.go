@@ -56,23 +56,3 @@ func TestXModem(t *testing.T) {
 		}
 	}
 }
-
-func hex2bin(hex string) []byte {
-	bin := make([]byte, len(hex)/2)
-	for i := 0; i < len(hex); i += 2 {
-		bin[i/2] = (byte(hex[i])-'0')<<4 + (byte(hex[i+1]) - '0')
-	}
-	return bin
-}
-
-func TestIBM_SDLC(t *testing.T) {
-	tests := []testCase{
-		{hex2bin("7602dd620062007263070177010a01a81502728412010201017777070100010800ff6401018201621e52fe5600008aca5a0177070100020800ff6401018201621e52fe5600000297d80177070100010801ff0101621e52fe5600008aca5a0177070100020801ff0101621e52fe5600000297d80177070100010802ff0101621e52fe5600000000000177070100020802ff0101621e52fe5600000000000177070100100700ff0101621b52fe5500000bc2010101"), 0xcb6f},
-	}
-	for _, testcase := range tests {
-		result := ChecksumIBM_SDLC(testcase.Message)
-		if testcase.CRC != result {
-			t.Fatalf("IBM SDLC CRC-16 value is incorrect, expected %d, received %d.", testcase.CRC, result)
-		}
-	}
-}
